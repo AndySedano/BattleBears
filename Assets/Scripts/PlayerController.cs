@@ -1,8 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
-public class PlayerController : MonoBehaviour
+public class PlayerController : Unit
 {
     #region GlobalVariables
 
@@ -18,7 +17,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private Transform _CameraPivot;
 
-    private Rigidbody _RB;
     private Animator _Anim;
     private Transform _CameraTransform;
 
@@ -34,17 +32,19 @@ public class PlayerController : MonoBehaviour
 
     #region UnityFunctions
 
-    private void Awake()
+    private new void Awake()
     {
-        _RB = GetComponent<Rigidbody>();
+        base.Awake();
         _Anim = GetComponentInChildren<Animator>();
         _CameraTransform = _CameraPivot.GetComponentInChildren<Camera>().transform;
+        Color teamColor = GameManager.Instance.TeamColors[TeamNumber];
+        transform.Find("Teddy/Teddy_Body").GetComponent<Renderer>().material.color = teamColor;
     }
 
     private void Update()
     {
 
-		Cursor.lockState = CursorLockMode.Locked;
+		//Cursor.lockState = CursorLockMode.Locked;
 
         ReadMoveInputs();
         CameraRoations();
